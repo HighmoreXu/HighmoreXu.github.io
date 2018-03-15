@@ -3,7 +3,7 @@ title: 事件分发
 layout: post
 tags:
   - iOS
-published: false
+published: true
 category: iOS
 ---
 * 一般来讲,线程执行完任务以后就会退出.这和如今我们使用App的方式肯定是相违背的,那如何解决这个问题呢? App采用Event Loop的方式,使应用能主线程能随时处理事件且不退出.

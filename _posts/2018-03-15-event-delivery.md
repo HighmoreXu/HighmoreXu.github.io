@@ -128,7 +128,7 @@ UIResponder的nextResponder不保存或设置下一个响应者, 方法默认实
 ```
 
 
-####远程控制事件
+#### 远程控制事件
 
 ```
 - (void)remoteControlReceivedWithEvent:(UIEvent *)event
@@ -137,7 +137,7 @@ UIResponder的nextResponder不保存或设置下一个响应者, 方法默认实
 2. 要运行远程控制事件的分发,必须调用UIApplication的beginReceivingRemoteControlEvents.关闭则调用endReceivingRemoteControlEvents.
 
 
-####其他
+#### 其他
 
 1. 获取Undo管理器 
 2. 验证命令, 比如文本输入框的复制粘贴等.

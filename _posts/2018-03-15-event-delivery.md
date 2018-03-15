@@ -58,6 +58,7 @@ UIResponder的nextResponder不保存或设置下一个响应者, 方法默认实
 2. 必须处于当前视图层次结构.
 
 #### 触摸事件
+
 当用户触发事件后, UIKit会创建事件对象UIEvent,然后该对象会被放入事件队列中,然后UIApplication会按照先进先出的顺序读取并分发事件队列中的事件.
 除触摸事件以外的事件,都会被分发给第一响应者处理,如果第一响应者无法处理,则根据响应链依次传递.对于触摸事件,则会先给UIWindow, UIWindow会利用hit-testing来寻找最合适处理该事件的对象.
 
@@ -116,6 +117,7 @@ UIResponder的nextResponder不保存或设置下一个响应者, 方法默认实
 自己的touchesCancelled:withEvent:来取消. 即手势识别优先touch识别.
 
 #### 移动事件
+
 ```
 // 移动事件开始
 - (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
@@ -127,6 +129,7 @@ UIResponder的nextResponder不保存或设置下一个响应者, 方法默认实
 
 
 ####远程控制事件
+
 ```
 - (void)remoteControlReceivedWithEvent:(UIEvent *)event
 ```
@@ -135,6 +138,7 @@ UIResponder的nextResponder不保存或设置下一个响应者, 方法默认实
 
 
 ####其他
+
 1. 获取Undo管理器 
 2. 验证命令, 比如文本输入框的复制粘贴等.
 ```
@@ -155,10 +159,15 @@ property(nonatomic, readonly) NSArray *keyCommands
 [understanding-cocoa-and-cocoa-touch-responder-chain](https://medium.com/ios-os-x-development/understanding-cocoa-and-cocoa-touch-responder-chain-12fe558ebe97)
 
 [event-delivery-on-ios-part-1](https://medium.com/bpxl-craft/event-delivery-on-ios-part-1-8e68b3a3f423)
+
 [event-delivery-on-ios-part-2](https://medium.com/bpxl-craft/event-delivery-on-ios-part-2-13f6246a88b5)
+
 [event-delivery-on-ios-part-3](https://medium.com/bpxl-craft/event-delivery-on-ios-part-3-14463fba84b4)
 
 [cocoa-uikit-uicontrol](http://southpeak.github.io/2015/12/13/cocoa-uikit-uicontrol/)
+
 [cocoa-uikit-uiresponder](http://southpeak.github.io/2015/03/07/cocoa-uikit-uiresponder/)
+
 [Hit-Testing](https://zhongwuzw.github.io/2016/09/12/iOS%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E4%B9%8BHit-Testing/)
+
 [developer.apple.com](https://developer.apple.com/documentation/uikit/uicontrol)

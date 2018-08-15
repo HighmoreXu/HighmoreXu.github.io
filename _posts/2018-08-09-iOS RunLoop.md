@@ -36,7 +36,6 @@ runloop主要职能是围绕着事件和消息的处理.细分一下.大致可�
 
 可以看出事件源主要有两种: input source传送来自其他应用或线程的异步事件/消息;Timer Source基于定时器的同步事件,可以定时或重复发送.
 
-
 ### Input sources
 
 监控其他线程或者其他应用的消息然后分发事件给线程(异步)
@@ -282,6 +281,11 @@ source1事件源来接收系统事件,其回调函数为__IOHIDEventSystemClient
 
 _UIApplicationHandleEventQueue() 会把 IOHIDEvent 处理并包装成 UIEvent 进行处理或分发，其中包括识别 UIGesture/处理屏幕旋转/发送给 UIWindow 等。通常事件比如 UIButton 点击、touchesBegin/Move/End/Cancel 事件都是在这个回调中完成的。
 
+UIButton点击调用栈:
+如果调试一下UIButton的点击, 可以发现source0的身影, 却看不到source1的. 这不是我们的结论有点违背吗?
+其实不然, Mach_Port会接收点击的source1. source1到达以后会唤醒runloop. 
+结合之前的runloop流程图,source1来临时会马上触发回调__IOHIDEventSystemClientQueueCallback.该回调发出source0. 后续就是我们看到的调用栈的source0及以下流程了.最后runloop休眠.
+
 ### 手势识别
 当上面的 _UIApplicationHandleEventQueue() 识别了一个手势时，其首先会调用 Cancel 将当前的 touchesBegin/Move/End 系列回调打断。随后系统将对应的 UIGestureRecognizer 标记为待处理。
 
@@ -299,9 +303,15 @@ _ZN2CA11Transaction17observer_callbackEP19__CFRunLoopObservermPv()。这个函�
 NSTimer. 之前简单分析过了.引用链接里面有个专门的分析,可以看下.
 
 经典问题 - 定时器滚动时失效
+苹果为了保证自己的顺滑,规定runloop同一时刻只能以一种Mode运行.主线程timer默认加入到Default Mode, 当滑动列表时, Mode被切换为UITrackingRunLoopMode, Default Mode下的timer就无法得到处理, 这就造成了滚动列表时, 定时器停止的问题.
 
+解决方案:
+1. 将当前 Timer 加入到 UITrackingRunLoopMode 或 kCFRunLoopCommonModes 中.
+2. 创建GCD定时器
 
 ### PerformSelector
+
+### GCD
 
 ## 引用
 [apple runloop](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html#//apple_ref/doc/uid/10000057i-CH16-SW23)
@@ -311,6 +321,8 @@ NSTimer. 之前简单分析过了.引用链接里面有个专门的分析,可以
 [behind-autorelease/](https://blog.sunnyxx.com/2014/10/15/behind-autorelease/)
 
 [ibireme runloop](https://blog.ibireme.com/2015/05/18/runloop/)
+
+[RunRunLoopRun](https://bou.io/RunRunLoopRun.html)
 
 
 
